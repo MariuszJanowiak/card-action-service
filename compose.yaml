@@ -1,0 +1,7 @@
+﻿services:
+  cardactionservice:
+    image: cardactionservice
+    build:
+      context: .
+      dockerfile: CardActionService/Dockerfile
+

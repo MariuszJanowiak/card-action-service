@@ -1,0 +1,6 @@
+@CardActionService_HostAddress = http://localhost:5001
+
+GET {{CardActionService_HostAddress}}/cardactionserice/
+Accept: application/json
+
+###

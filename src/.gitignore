@@ -1,0 +1,65 @@
+# Build artifacts
+bin/
+obj/
+out/
+TestResults/
+artifacts/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.sln.docstates
+*.vspscc
+*.vssscc
+*.vshost.*
+
+# Rider
+.idea/
+*.slnx
+
+# ASP.NET Core
+secrets.json
+*.pfx
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+*.container
+*.tar
+*.img
+
+# Publish outputs
+publish/
+*.zip
+*.tar.gz
+
+# Environment config
+.env
+.env.*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+
+# ReSharper and JetBrains
+_ReSharper*/
+*.DotSettings.user
+*.DotCover
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+
+# Logs
+*.log
+logs/
