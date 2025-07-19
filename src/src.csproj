@@ -25,8 +25,6 @@
     <ItemGroup>
         <Folder Include="Api\Controllers\" />
         <Folder Include="Application\Interfaces\" />
-        <Folder Include="Domain\Enums\" />
-        <Folder Include="Domain\Models\" />
         <Folder Include="Infrastructure\Services\" />
     </ItemGroup>
 
