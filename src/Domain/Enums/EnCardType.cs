@@ -7,7 +7,6 @@ namespace CardActionService.Domain.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EnCardType
 {
-    
     [EnumMember(Value = "Unknown")]
     Unknown = 0,
 

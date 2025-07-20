@@ -63,3 +63,14 @@ project.fragment.lock.json
 # Logs
 *.log
 logs/
+
+# Defaults
+/shelf/
+/workspace.xml
+/.idea.CardActionService.iml
+/projectSettingsUpdater.xml
+/modules.xml
+/contentModel.xml
+/httpRequests/
+/dataSources/
+/dataSources.local.xml

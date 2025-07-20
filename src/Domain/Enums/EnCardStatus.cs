@@ -7,15 +7,24 @@ namespace CardActionService.Domain.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EnCardStatus
 {
+    [EnumMember(Value = "Ordered")]
+    Ordered,
+
     [EnumMember(Value = "Inactive")]
-    Inactive = 0,
+    Inactive,
 
     [EnumMember(Value = "Active")]
-    Active = 1,
+    Active,
+
+    [EnumMember(Value = "Restricted")]
+    Restricted,
 
     [EnumMember(Value = "Blocked")]
-    Blocked = 2,
+    Blocked,
 
     [EnumMember(Value = "Expired")]
-    Expired = 3
+    Expired,
+
+    [EnumMember(Value = "Closed")]
+    Closed
 }
