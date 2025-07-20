@@ -8,23 +8,23 @@ namespace CardActionService.Domain.Enums;
 public enum EnCardStatus
 {
     [EnumMember(Value = "Ordered")]
-    Ordered,
+    Ordered = 0,
 
     [EnumMember(Value = "Inactive")]
-    Inactive,
+    Inactive = 1,
 
     [EnumMember(Value = "Active")]
-    Active,
+    Active = 2,
 
     [EnumMember(Value = "Restricted")]
-    Restricted,
+    Restricted = 3,
 
     [EnumMember(Value = "Blocked")]
-    Blocked,
+    Blocked = 4,
 
     [EnumMember(Value = "Expired")]
-    Expired,
+    Expired = 5,
 
     [EnumMember(Value = "Closed")]
-    Closed
+    Closed = 6
 }

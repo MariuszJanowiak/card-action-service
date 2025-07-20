@@ -7,15 +7,12 @@ namespace CardActionService.Domain.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EnCardType
 {
-    [EnumMember(Value = "Unknown")]
-    Unknown = 0,
-
     [EnumMember(Value = "Debit Card")]
-    Debit = 1,
+    Debit = 0,
 
     [EnumMember(Value = "Credit Card")]
-    Credit = 2,
+    Credit = 1,
 
     [EnumMember(Value = "Prepaid Card")]
-    Prepaid = 3
+    Prepaid = 2
 }
