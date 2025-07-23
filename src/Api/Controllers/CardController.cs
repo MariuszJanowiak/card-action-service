@@ -9,19 +9,9 @@ namespace CardActionService.Api.Controllers
     [ApiController]
     [Route("[controller]")]
     [Produces("application/json")]
-    public class CardController : ControllerBase
+    public class CardController(ICardService cardService, CardResolver cardResolver, ILogger<CardController> logger)
+        : ControllerBase
     {
-        private readonly ICardService _cardService;
-        private readonly CardResolver _cardResolver;
-        private readonly ILogger<CardController> _logger;
-
-        public CardController(ICardService cardService, CardResolver cardResolver, ILogger<CardController> logger)
-        {
-            _cardService = cardService;
-            _cardResolver = cardResolver;
-            _logger = logger;
-        }
-
         [HttpGet]
         [ProducesResponseType(typeof(CardResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
@@ -30,22 +20,23 @@ namespace CardActionService.Api.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Invalid model state for request: {@Request}", request);
+                logger.LogWarning("Invalid model state for request: {@Request}", request);
                 return BadRequest(ModelState);
             }
 
-            var cardDetails = await _cardService.GetCardDetails(request.UserId, request.CardNumber);
+            var cardDetails = await cardService.GetCardDetails(request.UserId, request.CardNumber);
             if (cardDetails == null)
             {
-                _logger.LogInformation("Card not found: UserId={UserId}, CardNumber={CardNumber}", request.UserId, request.CardNumber);
+                logger.LogInformation("Card not found: UserId={UserId}, CardNumber={CardNumber}", request.UserId,
+                    request.CardNumber);
                 return NotFound("Card not found");
             }
 
-            _logger.LogInformation("Resolving actions for Card: {@CardDetails}", cardDetails);
+            logger.LogInformation("Resolving actions for Card: {@CardDetails}", cardDetails);
 
-            var actions = _cardResolver.Resolve(cardDetails);
+            var actions = cardResolver.Resolve(cardDetails);
 
-            _logger.LogInformation("Resolved actions: {@Actions}", actions);
+            logger.LogInformation("Resolved actions: {@Actions}", actions);
 
             var response = new CardResponse(
                 new CardSummary(

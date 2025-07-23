@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using CardActionService.Domain.Models;
 
 namespace CardActionService.Application.Interfaces;

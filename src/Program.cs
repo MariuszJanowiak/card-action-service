@@ -1,6 +1,8 @@
-using CardActionService.Application.Interfaces;
 using CardActionService.Infrastructure.Data;
 using CardActionService.Infrastructure.Services;
+using CardActionService.Infrastructure.Middleware;
+using CardActionService.Application.Interfaces;
+using CardActionService.Domain.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,9 @@ switch (environment)
         builder.Services.AddSingleton<ICardDataProvider, SampleCardDataProvider>();
         break;
 
+    // Examples below demonstrate how provided architecture
+    // is designed to accommodate different data providers.
+
     case "Staging":
         builder.Services.AddScoped<ICardDataProvider, SqlCardDataProvider>(); // Placeholder
         break;
@@ -28,7 +33,9 @@ switch (environment)
         throw new Exception($"Unsupported environment: {environment}");
 }
 
+builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
 builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddSingleton<CardResolver>();
 
 var app = builder.Build();
 
@@ -39,7 +46,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ErrorHandlingMiddleware>();
+// app.UseAuthentication();
 app.UseAuthorization();
+// app.UseRouting();
 app.MapControllers();
 
 app.Run();
