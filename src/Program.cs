@@ -6,10 +6,10 @@ using CardActionService.Configuration.Logging;
 using CardActionService.Domain.Providers;
 using CorrelationId.DependencyInjection;
 using CorrelationId;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 LoggingSetup.ConfigureLogger();
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -34,12 +34,25 @@ builder.Services.AddDefaultCorrelationId(options =>
     options.IncludeInResponse = true;
 });
 
-
-
-
 builder.Host.UseSerilog();
-
 builder.Services.AddControllers();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0); //  Default API version
+    options.ReportApiVersions = true; // Add header
+    
+    // Optional: Enforce API versioning via custom header
+    // This requires consumers to specify the version in the request header (e.g. "X-API-Version: 1").
+    // Useful when building long-term maintainable APIs with multiple versions in parallel.
+    // Example request:
+    // UserId: User2
+    // CardNumber: Card212
+    // X-API-Version: 1
+    // options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -76,12 +89,18 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.DocumentTitle = "Card Action Service API";
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Card Action API v1");
+    });
 }
+
 
 app.UseHttpsRedirection();
 app.UseCorrelationId();
 app.UseCors("AllowFrontend");
+app.UseSerilogRequestLogging();
 app.UseMiddleware<CorrelationIdLoggingMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 // app.UseAuthentication();

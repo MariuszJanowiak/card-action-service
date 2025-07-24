@@ -6,8 +6,8 @@ using CardActionService.Api.Requests;
 namespace CardActionService.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    [Produces("application/json")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class CardController(
         ICardService cardService,
         CardResolver cardResolver,
