@@ -33,6 +33,7 @@ switch (environment)
         throw new Exception($"Unsupported environment: {environment}");
 }
 
+builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
 builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddSingleton<CardResolver>();

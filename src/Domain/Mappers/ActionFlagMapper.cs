@@ -2,7 +2,7 @@ using CardActionService.Domain.Enums;
 
 namespace CardActionService.Domain.Mappers;
 
-public static class EnActionFlagMapper
+public static class ActionFlagMapper
 {
     public static readonly IReadOnlyDictionary<char, EnActionFlag> SymbolMap = new Dictionary<char, EnActionFlag>
     {

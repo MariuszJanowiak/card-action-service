@@ -6,7 +6,7 @@ namespace CardActionService.Infrastructure.Services;
 
 public class CardResolver(IMatrixProvider matrix)
 {
-    public List<string> Resolve(CardDetails card)
+    public List<string> ResolveMatrixAction(CardDetails card)
     {
         var result = new List<string>();
         var statusIndex = (int)card.CardStatus;

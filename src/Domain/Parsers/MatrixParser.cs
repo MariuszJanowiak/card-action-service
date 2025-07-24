@@ -17,7 +17,7 @@ public static class MatrixParser
             for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
             {
                 var character = line[columnIndex];
-                if (!EnActionFlagMapper.SymbolMap.TryGetValue(character, out var flag))
+                if (!ActionFlagMapper.SymbolMap.TryGetValue(character, out var flag))
                     throw new InvalidOperationException(
                         $"Invalid char '{character}' at row {rowIndex}, col {columnIndex}");
 

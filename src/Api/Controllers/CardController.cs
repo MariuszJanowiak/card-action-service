@@ -2,18 +2,21 @@ using Microsoft.AspNetCore.Mvc;
 using CardActionService.Application.Interfaces;
 using CardActionService.Infrastructure.Services;
 using CardActionService.Api.Requests;
-using CardActionService.Api.Responses;
 
 namespace CardActionService.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Produces("application/json")]
-    public class CardController(ICardService cardService, CardResolver cardResolver, ILogger<CardController> logger)
+    public class CardController(
+        ICardService cardService,
+        CardResolver cardResolver,
+        ICardResponseFactory responseFactory,
+        ILogger<CardController> logger)
         : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(CardResponse), 200)]
+        [ProducesResponseType(typeof(object), 200)]
         [ProducesResponseType(typeof(string), 404)]
         [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
         public async Task<IActionResult> Get([FromQuery] CardRequest request)
@@ -33,19 +36,10 @@ namespace CardActionService.Api.Controllers
             }
 
             logger.LogInformation("Resolving actions for Card: {@CardDetails}", cardDetails);
-
-            var actions = cardResolver.Resolve(cardDetails);
-
+            var actions = cardResolver.ResolveMatrixAction(cardDetails);
             logger.LogInformation("Resolved actions: {@Actions}", actions);
 
-            var response = new CardResponse(
-                new CardSummary(
-                    cardDetails.CardType.ToString(),
-                    cardDetails.CardStatus.ToString(),
-                    cardDetails.IsPinSet
-                ),
-                actions
-            );
+            var response = responseFactory.CreateCardResponse(cardDetails, actions);
 
             return Ok(response);
         }

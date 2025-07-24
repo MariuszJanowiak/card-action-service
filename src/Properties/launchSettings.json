@@ -11,9 +11,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CardActionServiceTests": {
+    "CardActionServiceTesting": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:6001",
+      "applicationUrl": "https://localhost:6001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Testing"
       }
