@@ -2,9 +2,14 @@ using CardActionService.Infrastructure.Data;
 using CardActionService.Infrastructure.Services;
 using CardActionService.Infrastructure.Middleware;
 using CardActionService.Application.Interfaces;
+using CardActionService.Configuration.Logging;
 using CardActionService.Domain.Providers;
+using Serilog;
+
+LoggingSetup.ConfigureLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
