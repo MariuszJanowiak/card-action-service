@@ -3,30 +3,35 @@ using CardActionService.Infrastructure.Services;
 using CardActionService.Infrastructure.Middleware;
 using CardActionService.Application.Interfaces;
 using CardActionService.Configuration.Logging;
+using CardActionService.Configuration.Swagger;
 using CardActionService.Domain.Providers;
 using CorrelationId.DependencyInjection;
 using CorrelationId;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 
-LoggingSetup.ConfigureLogger();
+Log.Logger = LoggingSetup.ConfigureLogger();
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Host.UseSerilog();
+
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(
-                // Dev
-                "https://localhost:5173",
-                // Prod
-                "https://millenium.bank.example.pl"
-            )
+                "https://localhost:5001",
+                "https://millenium.bank.example.pl")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
+// Correlation ID
 builder.Services.AddDefaultCorrelationId(options =>
 {
     options.AddToLoggingScope = true;
@@ -34,28 +39,29 @@ builder.Services.AddDefaultCorrelationId(options =>
     options.IncludeInResponse = true;
 });
 
-builder.Host.UseSerilog();
+// Controllers
 builder.Services.AddControllers();
 
+// API Versioning
 builder.Services.AddApiVersioning(options =>
 {
     options.AssumeDefaultVersionWhenUnspecified = true;
-    options.DefaultApiVersion = new ApiVersion(1, 0); //  Default API version
-    options.ReportApiVersions = true; // Add header
-    
-    // Optional: Enforce API versioning via custom header
-    // This requires consumers to specify the version in the request header (e.g. "X-API-Version: 1").
-    // Useful when building long-term maintainable APIs with multiple versions in parallel.
-    // Example request:
-    // UserId: User2
-    // CardNumber: Card212
-    // X-API-Version: 1
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
     // options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Versioned Explorer
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
+builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+// Dependency Injection
 var environment = builder.Environment.EnvironmentName;
 
 switch (environment)
@@ -63,18 +69,12 @@ switch (environment)
     case "Development":
         builder.Services.AddSingleton<ICardDataProvider, SampleCardDataProvider>();
         break;
-
-    // Examples below demonstrate how provided architecture
-    // is designed to accommodate different data providers.
-
     case "Staging":
-        builder.Services.AddScoped<ICardDataProvider, SqlCardDataProvider>(); // Placeholder
+        builder.Services.AddScoped<ICardDataProvider, SqlCardDataProvider>();
         break;
-
     case "Production":
-        builder.Services.AddScoped<ICardDataProvider, KafkaCardDataProvider>(); // Placeholder
+        builder.Services.AddScoped<ICardDataProvider, KafkaCardDataProvider>();
         break;
-
     default:
         throw new Exception($"Unsupported environment: {environment}");
 }
@@ -86,16 +86,20 @@ builder.Services.AddSingleton<CardResolver>();
 
 var app = builder.Build();
 
+// Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.DocumentTitle = "Card Action Service API";
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Card Action API v1");
+        var apiVersionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var description in apiVersionProvider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", 
+                $"Card Action API {description.GroupName.ToUpper()}");
+        }
     });
 }
-
 
 app.UseHttpsRedirection();
 app.UseCorrelationId();
@@ -103,9 +107,7 @@ app.UseCors("AllowFrontend");
 app.UseSerilogRequestLogging();
 app.UseMiddleware<CorrelationIdLoggingMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
-// app.UseAuthentication();
 app.UseAuthorization();
-// app.UseRouting();
 app.MapControllers();
 
 app.Run();

@@ -1,11 +1,12 @@
 using Serilog;
 using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace CardActionService.Configuration.Logging;
 
 public static class LoggingSetup
 {
-    public static void ConfigureLogger()
+    public static ILogger ConfigureLogger()
     {
         var logFilePath = LogPathResolver.GetLogFilePath();
 
@@ -20,5 +21,7 @@ public static class LoggingSetup
                 retainedFileCountLimit: 7,
                 shared: true)
             .CreateLogger();
+        
+        return Log.Logger;
     }
 }
