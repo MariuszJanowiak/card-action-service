@@ -4,6 +4,8 @@ using CardActionService.Infrastructure.Middleware;
 using CardActionService.Application.Interfaces;
 using CardActionService.Configuration.Logging;
 using CardActionService.Domain.Providers;
+using CorrelationId.DependencyInjection;
+using CorrelationId;
 using Serilog;
 
 LoggingSetup.ConfigureLogger();
@@ -24,6 +26,14 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddDefaultCorrelationId(options =>
+{
+    options.AddToLoggingScope = true;
+    options.EnforceHeader = false;
+    options.IncludeInResponse = true;
+});
+
 
 
 
@@ -70,7 +80,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCorrelationId();
 app.UseCors("AllowFrontend");
+app.UseMiddleware<CorrelationIdLoggingMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 // app.UseAuthentication();
 app.UseAuthorization();
