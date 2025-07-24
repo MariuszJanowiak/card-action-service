@@ -9,6 +9,24 @@ using Serilog;
 LoggingSetup.ConfigureLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                // Dev
+                "https://localhost:5173",
+                // Prod
+                "https://millenium.bank.example.pl"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
+
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
@@ -52,6 +70,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 // app.UseAuthentication();
 app.UseAuthorization();
