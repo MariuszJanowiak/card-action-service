@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using CardActionService.Infrastructure.Data;
 using CardActionService.Infrastructure.Services;
 using CardActionService.Infrastructure.Middleware;
@@ -79,10 +80,18 @@ switch (environment)
         throw new Exception($"Unsupported environment: {environment}");
 }
 
+// Rate Limiting
 builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
 builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddSingleton<CardResolver>();
+
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddInMemoryRateLimiting();
+
+
 
 var app = builder.Build();
 
@@ -104,6 +113,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCorrelationId();
 app.UseCors("AllowFrontend");
+app.UseIpRateLimiting();
 app.UseSerilogRequestLogging();
 app.UseMiddleware<CorrelationIdLoggingMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
