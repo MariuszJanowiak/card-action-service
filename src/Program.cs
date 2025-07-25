@@ -19,10 +19,15 @@ Log.Logger = LoggingSetup.ConfigureLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Logging & Host
+
 builder.Logging.ClearProviders();
 builder.Host.UseSerilog();
 
-// CORS
+#endregion
+
+#region CORS
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -35,7 +40,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Correlation ID
+#endregion
+
+#region Correlation ID
+
 builder.Services.AddDefaultCorrelationId(options =>
 {
     options.AddToLoggingScope = true;
@@ -43,15 +51,20 @@ builder.Services.AddDefaultCorrelationId(options =>
     options.IncludeInResponse = true;
 });
 
-// Controllers
+#endregion
+
+#region Controllers & Validation
+
 builder.Services.AddControllers();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-
 builder.Services.AddValidatorsFromAssemblyContaining<CardRequestValidator>();
 
-// API Versioning
+#endregion
+
+#region API Versioning & Swagger
+
 builder.Services.AddApiVersioning(options =>
 {
     options.AssumeDefaultVersionWhenUnspecified = true;
@@ -60,7 +73,6 @@ builder.Services.AddApiVersioning(options =>
     // options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
 
-// Versioned Explorer
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
@@ -70,7 +82,10 @@ builder.Services.AddVersionedApiExplorer(options =>
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-// Dependency Injection
+#endregion
+
+#region Dependency Injection - Environment
+
 var environment = builder.Environment.EnvironmentName;
 
 switch (environment)
@@ -88,22 +103,40 @@ switch (environment)
         throw new Exception($"Unsupported environment: {environment}");
 }
 
-// Rate Limiting
-builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
+
+#endregion
+
+#region Dependency Injection - Services
+
+builder.Services.AddSingleton<ICardDataProvider, SampleCardDataProvider>();
 builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
+builder.Services.AddSingleton<ICardResolver, CardResolver>();
+
+builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
 builder.Services.AddScoped<ICardService, CardService>();
-builder.Services.AddSingleton<CardResolver>();
+
+
+#endregion
+
+#region Rate Limiting
 
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddInMemoryRateLimiting();
 
+#endregion
 
+#region Build App
 
 var app = builder.Build();
 
-// Swagger UI
+#endregion
+
+#region Middleware Pipeline
+
+#region Swagger Middleware (Development)
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,11 +145,13 @@ if (app.Environment.IsDevelopment())
         var apiVersionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
         foreach (var description in apiVersionProvider.ApiVersionDescriptions)
         {
-            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", 
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
                 $"Card Action API {description.GroupName.ToUpper()}");
         }
     });
 }
+
+#endregion
 
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -141,6 +176,9 @@ app.Use(async (context, next) =>
 app.UseMiddleware<IssueHandlingMiddleware>();
 
 app.UseAuthorization();
+
 app.MapControllers();
+
+#endregion
 
 app.Run();

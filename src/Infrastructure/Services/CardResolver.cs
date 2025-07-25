@@ -4,7 +4,7 @@ using CardActionService.Application.Interfaces;
 
 namespace CardActionService.Infrastructure.Services;
 
-public class CardResolver(IMatrixProvider matrix)
+public class CardResolver(IMatrixProvider matrix) : ICardResolver
 {
     public List<string> ResolveMatrixAction(CardDetails card)
     {

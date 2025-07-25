@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using CardActionService.Application.Interfaces;
 using CardActionService.Api.Requests;
-using CardActionService.Infrastructure.Services;
 
 namespace CardActionService.Api.Controllers
 {
@@ -12,7 +11,7 @@ namespace CardActionService.Api.Controllers
     [Produces("application/json")]
     public class CardController(
         ICardService cardService,
-        CardResolver cardResolver,
+        ICardResolver cardResolver,
         ICardResponseFactory responseFactory,
         ILogger<CardController> logger) : ControllerBase
     {

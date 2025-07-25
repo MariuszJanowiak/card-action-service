@@ -1,5 +1,4 @@
 using CardActionService.Application.Interfaces;
-using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
 using CardActionService.Infrastructure.Data.Models;
 using CardActionService.Infrastructure.Mappers;
@@ -8,17 +7,35 @@ namespace CardActionService.Infrastructure.Data;
 
 public class KafkaCardDataProvider : ICardDataProvider
 {
-    public Dictionary<string, Dictionary<string, CardDetails>> GetAllUserCards()
-    {
-        Console.WriteLine("PLACEHOLDER: Pretending to fetch data from Kafka");
+    private readonly Dictionary<string, Dictionary<string, CardDetails>> _usersWithCards;
 
+    public KafkaCardDataProvider()
+    {
+        _usersWithCards = LoadDataFromKafka();
+    }
+
+    public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
+    {
+        if (_usersWithCards.TryGetValue(userId, out var cardsForUser) &&
+            cardsForUser.TryGetValue(cardNumber, out var cardDetails))
+        {
+            return Task.FromResult<CardDetails?>(cardDetails);
+        }
+
+        return Task.FromResult<CardDetails?>(null);
+    }
+
+    private Dictionary<string, Dictionary<string, CardDetails>> LoadDataFromKafka()
+    {
+        // Temporary data
+        // Place for Kafka source
         var rawData = new List<KafkaCardDto>
         {
             new KafkaCardDto
             {
                 CardNumber = "KafkaCard001",
-                CardType = (int)EnCardType.Credit,
-                CardStatus = (int)EnCardStatus.Active,
+                CardType = (int)CardActionService.Domain.Enums.EnCardType.Credit,
+                CardStatus = (int)CardActionService.Domain.Enums.EnCardStatus.Active,
                 IsPinSet = true
             }
         };
