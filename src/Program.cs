@@ -111,12 +111,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+
 app.UseCorrelationId();
-app.UseCors("AllowFrontend");
-app.UseIpRateLimiting();
-app.UseSerilogRequestLogging();
 app.UseMiddleware<CorrelationIdLoggingMiddleware>();
-app.UseMiddleware<IssueHandlingMiddleware>();
+app.UseSerilogRequestLogging();
+app.UseCors("AllowFrontend");
+
+app.UseIpRateLimiting();
 app.UseMiddleware<ApiKeyMiddleware>();
 
 app.Use(async (context, next) =>
@@ -127,6 +129,8 @@ app.Use(async (context, next) =>
     context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
     await next();
 });
+
+app.UseMiddleware<IssueHandlingMiddleware>();
 
 app.UseAuthorization();
 app.MapControllers();

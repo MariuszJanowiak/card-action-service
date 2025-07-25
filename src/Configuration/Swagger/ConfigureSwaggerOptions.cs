@@ -9,6 +9,29 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
 {
     public void Configure(SwaggerGenOptions options)
     {
+        options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Name = "X-API-KEY",
+            Type = SecuritySchemeType.ApiKey,
+            Description = "API key required to access endpoints"
+        });
+
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+
         foreach (var description in provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(description.GroupName, new OpenApiInfo
@@ -24,4 +47,5 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
             });
         }
     }
+
 }
