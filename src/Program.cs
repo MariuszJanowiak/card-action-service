@@ -1,4 +1,5 @@
 using AspNetCoreRateLimit;
+using CardActionService.Api.Requests;
 using CardActionService.Infrastructure.Data;
 using CardActionService.Infrastructure.Services;
 using CardActionService.Infrastructure.Middleware;
@@ -11,6 +12,8 @@ using CorrelationId;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 Log.Logger = LoggingSetup.ConfigureLogger();
 
@@ -42,6 +45,11 @@ builder.Services.AddDefaultCorrelationId(options =>
 
 // Controllers
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CardRequestValidator>();
 
 // API Versioning
 builder.Services.AddApiVersioning(options =>

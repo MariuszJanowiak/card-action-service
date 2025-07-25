@@ -3,24 +3,21 @@ using CardActionService.Domain.Models;
 
 namespace CardActionService.Infrastructure.Services;
 
-public class CardService : ICardService
+public class CardService(ICardDataProvider dataProvider) : ICardService
 {
-    private readonly Dictionary<string, Dictionary<string, CardDetails>> _allUserCards;
+    private readonly Dictionary<string, Dictionary<string, CardDetails>> _allUserCards = dataProvider.GetAllUserCards();
 
-    public CardService(ICardDataProvider dataProvider)
-    {
-        _allUserCards = dataProvider.GetAllUserCards();
-    }
-
-    public async Task<CardDetails?> GetCardDetails(string userId, string cardNumber)
+    public async Task<CardDetails> GetCardDetails(string userId, string cardNumber)
     {
         await Task.Delay(1000);
 
         if (!_allUserCards.TryGetValue(userId, out var cardsForUser))
-            return null;
+            throw new KeyNotFoundException($"User '{userId}' not found.");
 
         if (!cardsForUser.TryGetValue(cardNumber, out var cardDetails))
-            return null;
+            throw new KeyNotFoundException($"Card '{cardNumber}' not found for user '{userId}'.");
+
+        cardDetails.DomainValidation();
 
         return cardDetails;
     }

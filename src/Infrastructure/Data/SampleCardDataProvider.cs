@@ -1,6 +1,8 @@
 using CardActionService.Application.Interfaces;
-using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
+using CardActionService.Domain.Enums;
+using CardActionService.Infrastructure.Data.Models;
+using CardActionService.Infrastructure.Mappers;
 
 namespace CardActionService.Infrastructure.Data;
 
@@ -22,19 +24,22 @@ public class SampleCardDataProvider : ICardDataProvider
                     string cardNumber = $"Card{userNumber}{cardCounter}";
                     bool isPinSet = cardCounter % 2 == 0;
 
-                    var card = new CardDetails(
-                        cardNumber,
-                        cardType,
-                        cardStatus,
-                        isPinSet
-                    );
+                    var dto = new SampleCardDto
+                    {
+                        CardNumber = cardNumber,
+                        CardType = (int)cardType,
+                        CardStatus = (int)cardStatus,
+                        IsPinSet = isPinSet
+                    };
 
-                    cardsForUser[cardNumber] = card;
+                    var card = CardDataMapper.Map(dto);
+
+                    cardsForUser[card.CardNumber] = card;
                     cardCounter++;
                 }
             }
 
-            string userId = $"User{userNumber}";
+            var userId = $"User{userNumber}";
             usersWithCards[userId] = cardsForUser;
         }
 
