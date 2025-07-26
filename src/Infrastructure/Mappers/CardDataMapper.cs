@@ -1,6 +1,6 @@
-using CardActionService.Domain.Models;
 using CardActionService.Domain.Enums;
 using CardActionService.Domain.Exceptions;
+using CardActionService.Domain.Models;
 using CardActionService.Infrastructure.Data.Models;
 
 namespace CardActionService.Infrastructure.Mappers;
@@ -28,7 +28,7 @@ public static class CardDataMapper
             dto.IsPinSet ?? false
         );
     }
-    
+
     public static CardDetails Map(SampleCardDto dto)
     {
         if (dto == null)
@@ -50,7 +50,7 @@ public static class CardDataMapper
             dto.IsPinSet ?? false
         );
     }
-    
+
     public static CardDetails Map(KafkaCardDto dto)
     {
         if (dto == null)
@@ -72,5 +72,4 @@ public static class CardDataMapper
             dto.IsPinSet ?? false
         );
     }
-
 }

@@ -1,3 +1,5 @@
+using Serilog.Context;
+
 namespace CardActionService.Infrastructure.Middleware;
 
 public class CorrelationIdLoggingMiddleware(RequestDelegate next)
@@ -9,7 +11,7 @@ public class CorrelationIdLoggingMiddleware(RequestDelegate next)
 
         context.Items["CorrelationId"] = correlationId;
 
-        using (Serilog.Context.LogContext.PushProperty("CorrelationId", correlationId))
+        using (LogContext.PushProperty("CorrelationId", correlationId))
         {
             await next(context);
         }

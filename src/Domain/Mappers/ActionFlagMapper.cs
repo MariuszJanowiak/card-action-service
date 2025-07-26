@@ -10,6 +10,6 @@ public static class ActionFlagMapper
         { 'Y', EnActionFlag.Yes },
         { 'U', EnActionFlag.UnlessNoPin },
         { 'P', EnActionFlag.IfPinSet },
-        { 'Q', EnActionFlag.IfPinNotSet },
+        { 'Q', EnActionFlag.IfPinNotSet }
     };
 }

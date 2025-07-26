@@ -7,9 +7,6 @@ namespace CardActionService.Domain.Providers;
 
 public class MatrixProvider : IMatrixProvider
 {
-    public EnActionFlag[,] RuleMatrix { get; }
-    public string[] ActionNames { get; }
-
     private readonly string[] _rawMatrixRows =
     [
         "NNYNNNN", // ACTION1
@@ -35,4 +32,7 @@ public class MatrixProvider : IMatrixProvider
             .Select(index => $"ACTION{index}")
             .ToArray();
     }
+    
+    public EnActionFlag[,] RuleMatrix { get; }
+    public string[] ActionNames { get; }
 }

@@ -17,6 +17,5 @@ public record CardDetails(
         // Additional validation
         if (CardStatus == EnCardStatus.Blocked)
             throw new DomainValidationException("Card is blocked.");
-
     }
 }

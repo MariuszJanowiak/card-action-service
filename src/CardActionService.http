@@ -1,6 +1,36 @@
-@CardActionService_HostAddress = http://localhost:5001
+@CardActionService_HostAddress = https://localhost:5001
 
-GET {{CardActionService_HostAddress}}/cardactionserice/
+### Valid request - expected 200 OK
+GET {{CardActionService_HostAddress}}/api/v1/card?userId=User1&cardNumber=Card11
 Accept: application/json
+X-API-KEY: super-secret-bank-key
+X-Correlation-ID: test-req-123
 
-###
+### Invalid user/card - expected 404 Not Found
+GET {{CardActionService_HostAddress}}/api/v1/card?userId=UnknownUser&cardNumber=InvalidCard
+Accept: application/json
+X-API-KEY: super-secret-bank-key
+X-Correlation-ID: test-req-123
+
+### Missing required parameters - expected 400 Bad Request
+GET {{CardActionService_HostAddress}}/api/v1/card
+Accept: application/json
+X-API-KEY: super-secret-bank-key
+X-Correlation-ID: test-req-123
+
+### Missing API key - expected 401 Unauthorized
+GET {{CardActionService_HostAddress}}/api/v1/card?userId=User1&cardNumber=Card11
+Accept: application/json
+X-Correlation-ID: test-req-123
+
+### Invalid API key - expected 401 Unauthorized
+GET {{CardActionService_HostAddress}}/api/v1/card?userId=User1&cardNumber=Card11
+Accept: application/json
+X-API-KEY: invalid-key
+X-Correlation-ID: test-req-123
+
+### Rate limit test - expected 429 Too Many Requests after threshold
+GET {{CardActionService_HostAddress}}/api/v1/card?userId=User1&cardNumber=Card11
+Accept: application/json
+X-API-KEY: super-secret-bank-key
+X-Correlation-ID: test-req-123

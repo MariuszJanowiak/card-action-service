@@ -1,19 +1,19 @@
 using AspNetCoreRateLimit;
 using CardActionService.Api.Requests;
-using CardActionService.Infrastructure.Data;
-using CardActionService.Infrastructure.Services;
-using CardActionService.Infrastructure.Middleware;
 using CardActionService.Application.Interfaces;
 using CardActionService.Configuration.Logging;
 using CardActionService.Configuration.Swagger;
 using CardActionService.Domain.Providers;
-using CorrelationId.DependencyInjection;
+using CardActionService.Infrastructure.Data;
+using CardActionService.Infrastructure.Middleware;
+using CardActionService.Infrastructure.Services;
 using CorrelationId;
+using CorrelationId.DependencyInjection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 
 Log.Logger = LoggingSetup.ConfigureLogger();
 
@@ -103,18 +103,15 @@ switch (environment)
         throw new Exception($"Unsupported environment: {environment}");
 }
 
-
 #endregion
 
 #region Dependency Injection - Services
 
-builder.Services.AddSingleton<ICardDataProvider, SampleCardDataProvider>();
 builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
 builder.Services.AddSingleton<ICardResolver, CardResolver>();
 
 builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
 builder.Services.AddScoped<ICardService, CardService>();
-
 
 #endregion
 
@@ -162,6 +159,9 @@ app.UseSerilogRequestLogging();
 app.UseCors("AllowFrontend");
 
 app.UseIpRateLimiting();
+
+app.UseMiddleware<IssueHandlingMiddleware>();
+
 app.UseMiddleware<ApiKeyMiddleware>();
 
 app.Use(async (context, next) =>
@@ -172,8 +172,6 @@ app.Use(async (context, next) =>
     context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
     await next();
 });
-
-app.UseMiddleware<IssueHandlingMiddleware>();
 
 app.UseAuthorization();
 

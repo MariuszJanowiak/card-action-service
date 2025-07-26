@@ -1,9 +1,8 @@
 using CardActionService.Domain.Models;
 
-namespace CardActionService.Application.Interfaces
+namespace CardActionService.Application.Interfaces;
+
+public interface ICardDataProvider
 {
-    public interface ICardDataProvider
-    {
-        Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber);
-    }
+    Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber);
 }

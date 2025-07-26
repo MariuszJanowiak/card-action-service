@@ -36,7 +36,7 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
         {
             options.SwaggerDoc(description.GroupName, new OpenApiInfo
             {
-                Title = $"Card Action Service API",
+                Title = "Card Action Service API",
                 Version = description.ApiVersion.ToString(),
                 Description = "API responsible for resolving allowed actions for a given bank card",
                 Contact = new OpenApiContact
@@ -47,5 +47,4 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
             });
         }
     }
-
 }

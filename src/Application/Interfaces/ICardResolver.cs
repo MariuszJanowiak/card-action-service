@@ -1,9 +1,8 @@
 using CardActionService.Domain.Models;
 
-namespace CardActionService.Application.Interfaces
+namespace CardActionService.Application.Interfaces;
+
+public interface ICardResolver
 {
-    public interface ICardResolver
-    {
-        List<string> ResolveMatrixAction(CardDetails card);
-    }
+    List<string> ResolveMatrixAction(CardDetails card);
 }

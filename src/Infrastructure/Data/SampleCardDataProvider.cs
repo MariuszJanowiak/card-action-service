@@ -2,61 +2,60 @@ using CardActionService.Application.Interfaces;
 using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
 
-namespace CardActionService.Infrastructure.Data
+namespace CardActionService.Infrastructure.Data;
+
+public class SampleCardDataProvider : ICardDataProvider
 {
-    public class SampleCardDataProvider : ICardDataProvider
+    private readonly Dictionary<string, Dictionary<string, CardDetails>> _usersWithCards;
+
+    public SampleCardDataProvider()
     {
-        private readonly Dictionary<string, Dictionary<string, CardDetails>> _usersWithCards;
+        _usersWithCards = CreateSampleUsersWithCards();
+    }
 
-        public SampleCardDataProvider()
+    public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
+    {
+        if (_usersWithCards.TryGetValue(userId, out var cardsForUser)
+            && cardsForUser.TryGetValue(cardNumber, out var cardDetails))
         {
-            _usersWithCards = CreateSampleUsersWithCards();
+            return Task.FromResult<CardDetails?>(cardDetails);
         }
 
-        public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
+        return Task.FromResult<CardDetails?>(null);
+    }
+
+    private Dictionary<string, Dictionary<string, CardDetails>> CreateSampleUsersWithCards()
+    {
+        var usersWithCards = new Dictionary<string, Dictionary<string, CardDetails>>();
+
+        for (var userNumber = 1; userNumber <= 3; userNumber++)
         {
-            if (_usersWithCards.TryGetValue(userId, out var cardsForUser) &&
-                cardsForUser.TryGetValue(cardNumber, out var cardDetails))
+            var cardsForUser = new Dictionary<string, CardDetails>();
+            var cardCounter = 1;
+
+            foreach (var cardType in Enum.GetValues<EnCardType>())
             {
-                return Task.FromResult<CardDetails?>(cardDetails);
-            }
-
-            return Task.FromResult<CardDetails?>(null);
-        }
-
-        private Dictionary<string, Dictionary<string, CardDetails>> CreateSampleUsersWithCards()
-        {
-            var usersWithCards = new Dictionary<string, Dictionary<string, CardDetails>>();
-
-            for (int userNumber = 1; userNumber <= 3; userNumber++)
-            {
-                var cardsForUser = new Dictionary<string, CardDetails>();
-                int cardCounter = 1;
-
-                foreach (var cardType in Enum.GetValues<EnCardType>())
+                foreach (var cardStatus in Enum.GetValues<EnCardStatus>())
                 {
-                    foreach (var cardStatus in Enum.GetValues<EnCardStatus>())
-                    {
-                        string cardNumber = $"Card{userNumber}{cardCounter}";
-                        bool isPinSet = cardCounter % 2 == 0;
+                    var cardNumber = $"Card{userNumber}{cardCounter}";
+                    var isPinSet = cardCounter % 2 == 0;
 
-                        var card = new CardDetails(
-                            cardNumber,
-                            cardType,
-                            cardStatus,
-                            isPinSet
-                        );
+                    var card = new CardDetails(
+                        cardNumber,
+                        cardType,
+                        cardStatus,
+                        isPinSet
+                    );
 
-                        cardsForUser[cardNumber] = card;
-                        cardCounter++;
-                    }
+                    cardsForUser[cardNumber] = card;
+                    cardCounter++;
                 }
-
-                string userId = $"User{userNumber}";
-                usersWithCards[userId] = cardsForUser;
             }
 
-            return usersWithCards;
+            var userId = $"User{userNumber}";
+            usersWithCards[userId] = cardsForUser;
         }
+
+        return usersWithCards;
     }
 }

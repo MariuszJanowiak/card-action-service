@@ -1,4 +1,5 @@
 using CardActionService.Application.Interfaces;
+using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
 using CardActionService.Infrastructure.Data.Models;
 using CardActionService.Infrastructure.Mappers;
@@ -16,8 +17,8 @@ public class KafkaCardDataProvider : ICardDataProvider
 
     public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
     {
-        if (_usersWithCards.TryGetValue(userId, out var cardsForUser) &&
-            cardsForUser.TryGetValue(cardNumber, out var cardDetails))
+        if (_usersWithCards.TryGetValue(userId, out var cardsForUser)
+            && cardsForUser.TryGetValue(cardNumber, out var cardDetails))
         {
             return Task.FromResult<CardDetails?>(cardDetails);
         }
@@ -31,11 +32,11 @@ public class KafkaCardDataProvider : ICardDataProvider
         // Place for Kafka source
         var rawData = new List<KafkaCardDto>
         {
-            new KafkaCardDto
+            new()
             {
                 CardNumber = "KafkaCard001",
-                CardType = (int)CardActionService.Domain.Enums.EnCardType.Credit,
-                CardStatus = (int)CardActionService.Domain.Enums.EnCardStatus.Active,
+                CardType = (int)EnCardType.Credit,
+                CardStatus = (int)EnCardStatus.Active,
                 IsPinSet = true
             }
         };

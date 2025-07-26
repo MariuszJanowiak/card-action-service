@@ -9,7 +9,7 @@ public static class MatrixValidator
 
         var expectedLength = rows[0].Length;
 
-        for (int rowIndex = 1; rowIndex < rows.Length; rowIndex++)
+        for (var rowIndex = 1; rowIndex < rows.Length; rowIndex++)
         {
             if (rows[rowIndex].Length != expectedLength)
                 throw new InvalidOperationException(

@@ -7,14 +7,14 @@ public static class MatrixParser
 {
     public static EnActionFlag[,] Parse(string[] rows)
     {
-        int rowCount = rows.Length;
-        int columnCount = rows[0].Length;
+        var rowCount = rows.Length;
+        var columnCount = rows[0].Length;
         var matrix = new EnActionFlag[rowCount, columnCount];
 
-        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+        for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
         {
             var line = rows[rowIndex];
-            for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+            for (var columnIndex = 0; columnIndex < columnCount; columnIndex++)
             {
                 var character = line[columnIndex];
                 if (!ActionFlagMapper.SymbolMap.TryGetValue(character, out var flag))

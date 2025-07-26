@@ -1,6 +1,6 @@
+using CardActionService.Application.Interfaces;
 using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
-using CardActionService.Application.Interfaces;
 
 namespace CardActionService.Infrastructure.Services;
 
@@ -13,7 +13,7 @@ public class CardResolver(IMatrixProvider matrix) : ICardResolver
         var type = card.CardType;
         var pinSet = card.IsPinSet;
 
-        for (int action = 0; action < matrix.ActionNames.Length; action++)
+        for (var action = 0; action < matrix.ActionNames.Length; action++)
         {
             var rule = matrix.RuleMatrix[action, statusIndex];
 

@@ -2,48 +2,47 @@ using CardActionService.Application.Interfaces;
 using CardActionService.Domain.Enums;
 using CardActionService.Domain.Models;
 
-namespace CardActionService.Infrastructure.Data
+namespace CardActionService.Infrastructure.Data;
+
+public class SqlCardDataProvider : ICardDataProvider
 {
-    public class SqlCardDataProvider : ICardDataProvider
+    // DB Simulator
+    // Place for SQL source
+    private readonly Dictionary<string, Dictionary<string, CardDetails>> _usersWithCards;
+
+    public SqlCardDataProvider()
     {
-        // DB Simulator
-        // Place for SQL source
-        private readonly Dictionary<string, Dictionary<string, CardDetails>> _usersWithCards;
+        _usersWithCards = CreateSampleUsersWithCards();
+    }
 
-        public SqlCardDataProvider()
+    public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
+    {
+        if (_usersWithCards.TryGetValue(userId, out var cardsForUser)
+            && cardsForUser.TryGetValue(cardNumber, out var cardDetails))
         {
-            _usersWithCards = CreateSampleUsersWithCards();
+            return Task.FromResult<CardDetails?>(cardDetails);
         }
 
-        public Task<CardDetails?> GetCardDetailsAsync(string userId, string cardNumber)
-        {
-            if (_usersWithCards.TryGetValue(userId, out var cardsForUser) &&
-                cardsForUser.TryGetValue(cardNumber, out var cardDetails))
-            {
-                return Task.FromResult<CardDetails?>(cardDetails);
-            }
+        return Task.FromResult<CardDetails?>(null);
+    }
 
-            return Task.FromResult<CardDetails?>(null);
-        }
-
-        private Dictionary<string, Dictionary<string, CardDetails>> CreateSampleUsersWithCards()
+    private Dictionary<string, Dictionary<string, CardDetails>> CreateSampleUsersWithCards()
+    {
+        return new Dictionary<string, Dictionary<string, CardDetails>>
         {
-            return new Dictionary<string, Dictionary<string, CardDetails>>
             {
+                "UserDb1", new Dictionary<string, CardDetails>
                 {
-                    "UserDb1", new Dictionary<string, CardDetails>
                     {
-                        {
-                            "DbCard001", new CardDetails(
-                                CardNumber: "DbCard001",
-                                CardType: EnCardType.Debit,
-                                CardStatus: EnCardStatus.Active,
-                                IsPinSet: true
-                            )
-                        }
+                        "DbCard001", new CardDetails(
+                            "DbCard001",
+                            EnCardType.Debit,
+                            EnCardStatus.Active,
+                            true
+                        )
                     }
                 }
-            };
-        }
+            }
+        };
     }
 }

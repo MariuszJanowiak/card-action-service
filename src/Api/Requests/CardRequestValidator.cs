@@ -32,14 +32,14 @@ public class CardRequestValidator : AbstractValidator<CardRequest>
     static private bool IsValidLuhn(string number)
     {
         // Luhn algorithm implementation for possible future card number validation
-        
-        int sum = 0;
-        bool alternate = false;
-        for (int i = number.Length - 1; i >= 0; i--)
+
+        var sum = 0;
+        var alternate = false;
+        for (var i = number.Length - 1; i >= 0; i--)
         {
             if (!char.IsDigit(number[i])) return false;
 
-            int n = number[i] - '0';
+            var n = number[i] - '0';
             if (alternate)
             {
                 n *= 2;

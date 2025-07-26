@@ -16,12 +16,12 @@ public static class LoggingSetup
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.File(
-                path: logFilePath,
+                logFilePath,
                 rollingInterval: RollingInterval.Day,
                 retainedFileCountLimit: 7,
                 shared: true)
             .CreateLogger();
-        
+
         return Log.Logger;
     }
 }
