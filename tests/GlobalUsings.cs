@@ -1,1 +1,15 @@
 global using Xunit;
+global using CardActionService.Api.Requests;
+global using FluentValidation.TestHelper;
+global using Microsoft.AspNetCore.Hosting;
+global using Moq;
+global using FluentAssertions;
+global using System.Threading.Tasks;
+global using System.Collections.Generic;
+global using CardActionService.Domain.Providers;
+global using CardActionService.Domain.Models;
+global using CardActionService.Domain.Enums;
+global using CardActionService.Infrastructure.Services;
+global using Microsoft.AspNetCore.Mvc;
+global using CardActionService.Api.Controllers;
+global using CardActionService.Domain.Validators;

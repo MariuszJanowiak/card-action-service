@@ -9,7 +9,7 @@ public static class ActionFlagMapper
         { 'N', EnActionFlag.No },
         { 'Y', EnActionFlag.Yes },
         { 'U', EnActionFlag.UnlessNoPin },
-        { 'P', EnActionFlag.IfPinSet },
-        { 'Q', EnActionFlag.IfPinNotSet }
+        { 'P', EnActionFlag.IfPinNotSet },
+        { 'Q', EnActionFlag.IfPinSet }
     };
 }

@@ -1,5 +1,4 @@
 @CardActionService_HostAddress = https://localhost:5001
-
 ### Valid request - expected 200 OK
 GET {{CardActionService_HostAddress}}/api/v1/card?userId=User1&cardNumber=Card11
 Accept: application/json

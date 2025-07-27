@@ -27,23 +27,27 @@ public class CardRequestValidator : AbstractValidator<CardRequest>
                 .Must(IsValidLuhn).WithMessage("CardNumber is invalid (failed Luhn check).");
         }
     }
-
-
-    static private bool IsValidLuhn(string number)
+    
+    static private bool IsValidLuhn(string? number)
     {
-        // Luhn algorithm implementation for possible future card number validation
+        if (string.IsNullOrWhiteSpace(number))
+            return false;
 
-        var sum = 0;
-        var alternate = false;
-        for (var i = number.Length - 1; i >= 0; i--)
+        int sum = 0;
+        bool alternate = false;
+
+        for (int i = number.Length - 1; i >= 0; i--)
         {
-            if (!char.IsDigit(number[i])) return false;
+            char c = number[i];
+            if (!char.IsDigit(c))
+                return false;
 
-            var n = number[i] - '0';
+            int n = c - '0';
             if (alternate)
             {
                 n *= 2;
-                if (n > 9) n -= 9;
+                if (n > 9)
+                    n -= 9;
             }
 
             sum += n;
