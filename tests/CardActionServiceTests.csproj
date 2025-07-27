@@ -24,8 +24,4 @@
     <ProjectReference Include="..\src\CardActionService.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Unit\Services\" />
-  </ItemGroup>
-
 </Project>

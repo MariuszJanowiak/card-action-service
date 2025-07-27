@@ -1,0 +1,26 @@
+site_name: Card Action Service API
+theme:
+  name: material
+nav:
+- Home: index.md
+- Project:
+  - Intro: Project/Introduction.md
+  - Build it: Project/Building.md
+  - How does it work?: Project/How.md
+- Architecture:
+  - System Architecture: Architecture/System Architecture.md
+  - Solution: Architecture/Solution Structure.md
+  - Layers:
+    - API Layer: Architecture/API Layer.md
+    - Application Layer: Architecture/Application Layer.md
+    - Domain Layer: Architecture/Domain Layer.md
+    - Infrastructure Layer: Architecture/Infrastructure Layer.md
+    - Helper Modules: Architecture/Modules.md
+    - Implementation Details: Architecture/Implementation Details.md
+- Testing:
+  - Overview: Testing/Testing.md
+  - Security: Testing/Security.md
+- Summary: Summary.md
+- FAQ: FAQ.md
+extra_css:
+- css/custom.css
