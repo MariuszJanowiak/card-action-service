@@ -37,6 +37,9 @@ public class CardController(
 
         var response = responseFactory.CreateCardResponse(cardDetails, actions);
 
-        return Ok(response);
+        // response can be manipulated for dedicate requirements
+        // and solution is open for any requirement definition further.
+        // Current configuration represent JSON array
+        return Ok(response.Actions);
     }
 }

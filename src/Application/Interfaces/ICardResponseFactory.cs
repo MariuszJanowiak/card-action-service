@@ -1,8 +1,9 @@
+using CardActionService.Application.Contract;
 using CardActionService.Domain.Models;
 
 namespace CardActionService.Application.Interfaces;
 
 public interface ICardResponseFactory
 {
-    object CreateCardResponse(CardDetails card, List<string> actions);
+    CardResponse CreateCardResponse(CardDetails card, List<string> actions);
 }

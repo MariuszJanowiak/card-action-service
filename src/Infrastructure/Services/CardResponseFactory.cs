@@ -1,3 +1,4 @@
+using CardActionService.Application.Contract;
 using CardActionService.Application.Interfaces;
 using CardActionService.Domain.Models;
 
@@ -5,7 +6,7 @@ namespace CardActionService.Infrastructure.Services;
 
 public class CardResponseFactory(IHostEnvironment env, ILogger<CardResponseFactory> logger) : ICardResponseFactory
 {
-    public object CreateCardResponse(CardDetails cardDetails, List<string> actions)
+    public CardResponse CreateCardResponse(CardDetails cardDetails, List<string> actions)
     {
         // This section can be extended in the future to include
         // environment-specific behaviors such as enhanced debug logging,
@@ -18,6 +19,12 @@ public class CardResponseFactory(IHostEnvironment env, ILogger<CardResponseFacto
                 cardDetails.IsPinSet);
         }
 
-        return actions;
+        var summary = new CardSummary(
+            cardDetails.CardType.ToString(),
+            cardDetails.CardStatus.ToString(),
+            cardDetails.IsPinSet
+        );
+
+        return new CardResponse(summary, actions);
     }
 }

@@ -1,4 +1,4 @@
-namespace CardActionService.Api.Responses;
+namespace CardActionService.Application.Contract;
 
 public class CardResponse(CardSummary card, IEnumerable<string> actions)
 {

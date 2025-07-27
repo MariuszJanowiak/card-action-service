@@ -1,4 +1,4 @@
-﻿**/.dockerignore
+﻿bin/**/.dockerignore
 **/.env
 **/.git
 **/.gitignore
@@ -23,3 +23,7 @@
 **/values.dev.yaml
 LICENSE
 README.md
+obj/
+.git
+.idea
+.vs

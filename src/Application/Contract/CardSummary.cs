@@ -1,4 +1,4 @@
-namespace CardActionService.Api.Responses;
+namespace CardActionService.Application.Contract;
 
 public class CardSummary(string cardType, string cardStatus, bool isPinSet)
 {
