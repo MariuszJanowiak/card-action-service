@@ -3,6 +3,7 @@ using CardActionService.Api.Requests;
 using CardActionService.Application.Interfaces;
 using CardActionService.Configuration;
 using CardActionService.Configuration.Logging;
+using CardActionService.Configuration.Security;
 using CardActionService.Configuration.Swagger;
 using CardActionService.Domain.Providers;
 using CardActionService.Infrastructure.Data;
@@ -18,7 +19,18 @@ using Serilog;
 
 Log.Logger = LoggingSetup.ConfigureLogger();
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = Directory.GetCurrentDirectory(),
+    EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"
+});
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
 
 #region Logging & Host
 
@@ -110,8 +122,12 @@ switch (environment)
 
 #region Dependency Injection - Services
 
+builder.Services.Configure<KeyOption>(
+    builder.Configuration.GetSection(KeyOption.SectionName));
+
 builder.Services.AddSingleton<IMatrixProvider, MatrixProvider>();
 builder.Services.AddSingleton<ICardResolver, CardResolver>();
+
 
 builder.Services.AddScoped<ICardResponseFactory, CardResponseFactory>();
 builder.Services.AddScoped<ICardService, CardService>();
@@ -173,6 +189,9 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Frame-Options"] = "DENY";
     context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
     context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer";
+    context.Response.Headers["Permissions-Policy"] = "geolocation=(), microphone=()";
+
     await next();
 });
 
@@ -183,3 +202,5 @@ app.MapControllers();
 #endregion
 
 app.Run();
+
+public partial class Program { }

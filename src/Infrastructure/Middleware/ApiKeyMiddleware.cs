@@ -1,14 +1,18 @@
+using CardActionService.Configuration.Security;
+using Microsoft.Extensions.Options;
+
 namespace CardActionService.Infrastructure.Middleware;
 
-public class ApiKeyMiddleware(RequestDelegate next, IConfiguration config)
+public class ApiKeyMiddleware(RequestDelegate next, IOptions<KeyOption> options)
 {
-    public async Task Invoke(HttpContext context)
+    private readonly string _apiKey = options.Value.ApiKey;
+
+    public async Task InvokeAsync(HttpContext context)
     {
-        var requiredKey = config["Security:ApiKey"];
-        if (!context.Request.Headers.TryGetValue("X-API-KEY", out var apiKey) || apiKey != requiredKey)
+        if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey) ||
+            extractedApiKey != _apiKey)
         {
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync("Unauthorized");
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return;
         }
 
