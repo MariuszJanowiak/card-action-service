@@ -124,5 +124,8 @@ public class MatrixValidatorTests
         Assert.False(IsValidCharHelper(invalidChar));
     }
 
-    private bool IsValidCharHelper(char c) => c == 'N' || c == 'Y' || c == 'U' || c == 'P' || c == 'Q';
+    private bool IsValidCharHelper(char c)
+    {
+        return c == 'N' || c == 'Y' || c == 'U' || c == 'P' || c == 'Q';
+    }
 }

@@ -1,9 +1,10 @@
 # Domain Layer
 
-Holds:
+- Core enums: `CardType`, `CardStatus`, `EnActionFlag`
+- Main domain model: `CardDetails`
+- Matrix rules and action definitions for card operation logic
+- Exception types and pure-value objects
 
-- Enums: CardType, CardStatus
-- Model: CardDetails
-- MatrixConstants: Actions + Rules
+This layer holds all domain logic and definitions.  
+No runtime behavior, no external dependencies — only business rules and structures.
 
-Pure logic — no dependencies or runtime behavior.

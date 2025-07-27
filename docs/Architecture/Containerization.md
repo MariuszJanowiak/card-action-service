@@ -1,17 +1,12 @@
 # Containerization
 
-- `Dockerfile` — Template for building a container image of the API.
-- `compose.yaml` — Template for running the API container with Docker Compose.
-- `.dockerignore` — Files and folders to exclude from the container build context.
+- `Dockerfile` — basic template for building a container image of the API
+- `compose.yaml` — example for running the API using Docker Compose
+- `.dockerignore` — defines which files and folders are excluded from the container build
 
-Containerization allows the API to be run in isolated environments, making it ready for production, cloud, or CI/CD workflows.
+The API is ready for containerized environments out of the box.  
+You can run it locally, in the cloud, or integrate with CI/CD using these templates.
 
-> No complex Docker setup is required for this assignment.
->  
-> The provided templates are ready for future extension.
-
-**How to build and run (optional):**
-```bash
-docker build -t card-action-api .
-docker run -p 5001:5001 card-action-api
+No advanced Docker configuration is required for this project.  
+The provided files are clean and simple, and can be easily extended as needed.
 

@@ -1,11 +1,41 @@
-# System Architecture
+# Architecture
 
-The solution is organized into clear layers:
+## API
+- Controllers (CardController)
+- Requests (input DTOs + validation)
+- Responses (output DTOs)
 
-- API (Controllers, Middleware)
-- Application (Services, Interfaces)
-- Domain (Enums, Models, Constants)
-- Infrastructure (Resolvers, Data Providers)
-- Configuration (Startup, Logging, Middleware)
+## Application
+- Contract (CardResponse, CardSummary)
+- Interfaces (ICardService, ICardResolver, ICardDataProvider, ICardResponseFactory, IMatrixProvider)
 
-Based on dependency injection, clean separation of concerns, and runtime configuration.
+## Domain
+- Enums (EnActionFlag, EnCardType, EnCardStatus)
+- Exceptions (DomainValidationException)
+- Mappers (ActionFlagMapper)
+- Models (CardDetails)
+- Parsers (MatrixParser)
+- Providers (MatrixProvider)
+- Validators (MatrixValidator)
+
+## Infrastructure
+- Data providers (KafkaCardDataProvider, SqlCardDataProvider, SampleCardDataProvider + DTOs)
+- Mappers (CardDataMapper)
+- Middleware (ApiKeyMiddleware, CorrelationIdLoggingMiddleware, IssueHandlingMiddleware)
+- Services (CardService, CardResolver, CardResponseFactory)
+
+## Configuration
+- API behavior (ConfigureApiBehavior)
+- Logging (LoggingSetup, LogPathResolver)
+- Security (KeyOption)
+- Swagger (ConfigureSwaggerOptions)
+
+## Testing
+- `/tests` — unit and integration tests (CardResolverTests, ApiKeyMiddlewareTests, etc.)
+
+## Other
+- `appsettings.*.json` — environment config
+- `launchSettings.json` — run/debug profiles
+- `Dockerfile`, `compose.yaml` — containerization
+- `Program.cs` — entry point
+

@@ -4,17 +4,19 @@
 
 Open your terminal and run the following command:
 
-```git clone <repository_URL>```
+```bash
+git clone <repository_URL>
+```
 
 ### Launch the Project
 
-Use your IDE or CLI to run the following startup command:
+Use your IDE or run:
 
 ```bash
 dotnet run --project src
 ```
 
-> You can also run tests beforehand using:
+> Optional: run tests beforehand
 
 ```bash
 dotnet test
@@ -22,6 +24,11 @@ dotnet test
 
 ### Test the API
 
-Once running, navigate to:  
-**`https://localhost:5001/swagger`**  
-Swagger UI allows you to verify and invoke available endpoints easily.
+Once running, open your browser and navigate to:
+
+```
+https://localhost:5001/swagger
+```
+
+Swagger UI allows you to explore and test all available endpoints.
+

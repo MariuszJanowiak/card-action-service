@@ -10,7 +10,7 @@ public class CardResolver : ICardResolver
 
     public CardResolver(IMatrixProvider matrix)
     {
-        this._matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
+        _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
         ValidateMatrix();
     }
 
@@ -22,10 +22,11 @@ public class CardResolver : ICardResolver
         if (_matrix.ActionNames == null || _matrix.RuleMatrix == null)
             throw new InvalidOperationException("MatrixProvider data is not properly initialized.");
 
-        int statusIndex = (int)card.CardStatus;
+        var statusIndex = (int)card.CardStatus;
 
         if (statusIndex < 0 || statusIndex >= _matrix.RuleMatrix.GetLength(1))
-            throw new ArgumentOutOfRangeException(nameof(card.CardStatus), $"CardStatus index {statusIndex} is out of range.");
+            throw new ArgumentOutOfRangeException(nameof(card.CardStatus),
+                $"CardStatus index {statusIndex} is out of range.");
 
         if (_matrix.RuleMatrix.GetLength(0) != _matrix.ActionNames.Length)
             throw new InvalidOperationException("Mismatch between ActionNames length and RuleMatrix rows count.");
@@ -34,7 +35,7 @@ public class CardResolver : ICardResolver
         var type = card.CardType;
         var pinSet = card.IsPinSet;
 
-        for (int action = 0; action < _matrix.ActionNames.Length; action++)
+        for (var action = 0; action < _matrix.ActionNames.Length; action++)
         {
             var rule = _matrix.RuleMatrix[action, statusIndex];
 

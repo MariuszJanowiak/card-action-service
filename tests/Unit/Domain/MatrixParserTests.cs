@@ -8,7 +8,7 @@ public class MatrixParserTests
     public void Parse_ValidMatrix_ReturnsExpectedEnumMatrix()
     {
         // Arrange
-        string[] rawMatrix = new[]
+        var rawMatrix = new[]
         {
             "NY",
             "QU"
@@ -28,7 +28,7 @@ public class MatrixParserTests
     public void Parse_InvalidChar_ThrowsInvalidOperationException()
     {
         // Arrange
-        string[] rawMatrix = new[]
+        var rawMatrix = new[]
         {
             "NY",
             "ZX"

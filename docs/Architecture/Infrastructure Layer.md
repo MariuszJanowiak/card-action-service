@@ -1,7 +1,12 @@
 # Infrastructure Layer
 
-- CardResolver: matrix interpretation logic
-- Sql/Kafka/SampleCardDataProvider: dynamic injection based on environment
-- Middleware: handles API Key, exceptions, logging correlation
+- CardResolver
+- CardService
+- SqlCardDataProvider
+- KafkaCardDataProvider
+- SampleCardDataProvider
+- CardDataMapper
+- Middleware (ApiKey, Exception, CorrelationId)
 
 Well-separated and testable.
+

@@ -21,7 +21,7 @@ public class MatrixProvider : IMatrixProvider
         "YYYNNNN", // ACTION10
         "NYYNNNN", // ACTION11
         "YYYNNNN", // ACTION12
-        "YYYNNNN"  // ACTION13
+        "YYYNNNN" // ACTION13
     };
 
     public MatrixProvider()

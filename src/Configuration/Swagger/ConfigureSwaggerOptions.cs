@@ -42,7 +42,7 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
                 Contact = new OpenApiContact
                 {
                     Name = "Documentation",
-                    Url = new Uri("https://github.com/MariuszJanowiak")
+                    Url = new Uri("https://MariuszJanowiak.github.io/card-action-service/")
                 }
             });
         }

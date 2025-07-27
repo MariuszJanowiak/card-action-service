@@ -4,7 +4,7 @@
 }
 
 :root {
-  --md-default-bg-color: none; 
+  --md-default-bg-color: #8E005D; 
 }
 
 .md-typeset img {
@@ -15,7 +15,7 @@
 
 @media screen and (max-width: 76.2344em) {
   .md-nav--primary, .md-nav--primary .md-nav {
-    background-color: #2B2E83;
+    background-color: #8E005D;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -29,7 +29,7 @@
 
 .md-search-result .md-typeset {
 	opacity: 1;
-	foreground-color: #ffffff;
+	foreground-color: #8E005D;
 }
 
 .md-sidebar__scrollwrap {
@@ -37,7 +37,7 @@
   margin: 0 .2rem;
   overflow-y: auto;
   scrollbar-color: #ffffff;
-  background-color: #2B2E83;
+  background-color: #8E005D;
 }
 
 .md-search {
@@ -54,7 +54,7 @@
 }
 
 body {
-  background-color: #2B2E83;
+  background-color: #8E005D;
   color: #ffffff;
   font-family: 'Cascadia Code', monospace;
   margin: 0;
@@ -67,18 +67,18 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #FF7F00;
+  color: #ffffff;
   text-decoration: none;
 }
 
 .nav a, .wy-menu-vertical a {
-  color: #ffffff !important;
+  color: #ffffff; !important;
   font-family: 'Cascadia Code', monospace;
   text-transform: none;
 }
 
 .nav a:hover, .wy-menu-vertical a:hover {
-  color: #FF7F00 !important;
+  color: #ffffff; !important;
 }
 
 h1, h2, h3, h4, h5, h6 {

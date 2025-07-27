@@ -11,8 +11,14 @@ public class CardResolverTests
     }
 
     [Theory]
-    [InlineData(EnCardType.Credit, EnCardStatus.Active, true, new[] { "ACTION1", "ACTION3", "ACTION4", "ACTION5", "ACTION6", "ACTION8", "ACTION9", "ACTION10", "ACTION11", "ACTION12", "ACTION13" })]
-    [InlineData(EnCardType.Prepaid, EnCardStatus.Ordered, false, new[] { "ACTION3", "ACTION4", "ACTION7", "ACTION8", "ACTION9", "ACTION10", "ACTION12", "ACTION13" })]
+    [InlineData(EnCardType.Credit, EnCardStatus.Active, true,
+        new[]
+        {
+            "ACTION1", "ACTION3", "ACTION4", "ACTION5", "ACTION6", "ACTION8", "ACTION9", "ACTION10", "ACTION11",
+            "ACTION12", "ACTION13"
+        })]
+    [InlineData(EnCardType.Prepaid, EnCardStatus.Ordered, false,
+        new[] { "ACTION3", "ACTION4", "ACTION7", "ACTION8", "ACTION9", "ACTION10", "ACTION12", "ACTION13" })]
     public void ResolveMatrixAction_ValidCard_ReturnsExpectedActions(
         EnCardType cardType,
         EnCardStatus cardStatus,

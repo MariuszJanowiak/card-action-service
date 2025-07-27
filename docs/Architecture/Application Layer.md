@@ -1,9 +1,10 @@
 # Application Layer
 
-Contains:
+- ICardService
+- ICardResponseFactory
+- ICardResolver
+- IMatrixProvider
+- ICardDataProvider
 
-- `ICardService` (fetching data)
-- `ICardResponseFactory` (return shaping)
-- `ICardResolver` (rule evaluation interface)
+Implements all business logic and interfaces, with no hard dependencies on infrastructure.
 
-Implements all business behavior without hard dependencies on infrastructure.

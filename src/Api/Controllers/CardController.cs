@@ -26,7 +26,8 @@ public class CardController(
 
         if (cardDetails == null)
         {
-            logger.LogWarning("Card not found for UserId: {UserId}, CardNumber: {CardNumber}", request.UserId, request.CardNumber);
+            logger.LogWarning("Card not found for UserId: {UserId}, CardNumber: {CardNumber}", request.UserId,
+                request.CardNumber);
             return NotFound(new ProblemDetails { Title = "Card not found." });
         }
 
