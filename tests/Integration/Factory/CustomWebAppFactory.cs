@@ -21,7 +21,7 @@ public class CustomWebAppFactory : WebApplicationFactory<Program>
             services.AddSingleton(mock.Object);
         });
 
-        builder.ConfigureAppConfiguration((ctx, config) =>
+        builder.ConfigureAppConfiguration((_, config) =>
         {
             var settings = new Dictionary<string, string?>
             {
