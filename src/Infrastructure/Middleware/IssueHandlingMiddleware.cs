@@ -4,7 +4,10 @@ using CardActionService.Domain.Exceptions;
 
 namespace CardActionService.Infrastructure.Middleware;
 
-public class IssueHandlingMiddleware(RequestDelegate next, ILogger<IssueHandlingMiddleware> logger)
+public class IssueHandlingMiddleware(
+    RequestDelegate next,
+    ILogger<IssueHandlingMiddleware> logger,
+    IHostEnvironment env)
 {
     public async Task Invoke(HttpContext context)
     {
@@ -44,12 +47,14 @@ public class IssueHandlingMiddleware(RequestDelegate next, ILogger<IssueHandling
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
+        var responseDetail = env.IsDevelopment() ? detail : "An error occurred while processing your request.";
+
         var issue = new
         {
             type = $"https://httpstatuses.com/{(int)statusCode}",
             title,
             status = (int)statusCode,
-            detail,
+            detail = responseDetail,
             instance = context.Request.Path
         };
 

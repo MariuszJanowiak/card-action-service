@@ -1,6 +1,7 @@
 using AspNetCoreRateLimit;
 using CardActionService.Api.Requests;
 using CardActionService.Application.Interfaces;
+using CardActionService.Configuration;
 using CardActionService.Configuration.Logging;
 using CardActionService.Configuration.Swagger;
 using CardActionService.Domain.Providers;
@@ -60,6 +61,8 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CardRequestValidator>();
+
+builder.Services.ConfigureApiBehaviorOptions(builder.Environment);
 
 #endregion
 
