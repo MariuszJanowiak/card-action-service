@@ -1,6 +1,8 @@
 # Build artifacts
 bin/
 obj/
+**/bin/
+**/obj/
 out/
 TestResults/
 artifacts/
@@ -15,9 +17,22 @@ artifacts/
 *.vssscc
 *.vshost.*
 
-# Rider
+# Rider / JetBrains
 .idea/
+.idea/workspace.xml
 *.slnx
+/.idea.CardActionService.iml
+/shelf/
+/workspace.xml
+/projectSettingsUpdater.xml
+/modules.xml
+/contentModel.xml
+/httpRequests/
+/dataSources/
+/dataSources.local.xml
+_ReSharper*/
+*.DotSettings.user
+*.DotCover
 
 # ASP.NET Core
 secrets.json
@@ -46,11 +61,6 @@ Thumbs.db
 # Node.js
 node_modules/
 
-# ReSharper and JetBrains
-_ReSharper*/
-*.DotSettings.user
-*.DotCover
-
 # NuGet
 *.nupkg
 *.snupkg
@@ -63,15 +73,3 @@ project.fragment.lock.json
 # Logs
 *.log
 logs/
-
-# Defaults
-.idea/workspace.xml
-/shelf/
-/workspace.xml
-/.idea.CardActionService.iml
-/projectSettingsUpdater.xml
-/modules.xml
-/contentModel.xml
-/httpRequests/
-/dataSources/
-/dataSources.local.xml
