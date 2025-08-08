@@ -14,7 +14,8 @@ Designed with testability, clean architecture, and modern security practices in 
 ## Documentation
 
 Full technical documentation is available here:  
-[CARD ACTION SERVICE API - DOCUMENTATION](https://MariuszJanowiak.github.io/card-action-service/)
+[Documentation](https://MariuszJanowiak.github.io/card-action-service/)
+[Security Tests Repository](https://github.com/MariuszJanowiak/card-action-service-security)
 
 Covers system architecture, usage examples, deployment notes, and security design.
 
